@@ -132,6 +132,12 @@ esac
 
 if [ $? -ne 0 ]; then
 	echo Configuration failed
+	if [ -d ./backup-$1/system/b2g ]; then
+		echo " * Your phone or device backup is already using B2G."
+		echo " * Either connect a phone still using Android,"
+		echo " * or provide a backup image of a device on Android"
+		echo " * via 'ANDROIDFS_DIR' env variable."
+	fi
 	exit -1
 fi
 
