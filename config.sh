@@ -8,8 +8,17 @@ repo_sync() {
 	else
 		BRANCH=$1
 	fi
-	rm -rf .repo/manifest* &&
-	$REPO init -u $GITREPO -b $BRANCH &&
+        # Only run `repo init` when it isn't already done
+        # on the given device branch
+	if [ ! -f .repo/inited ] || [ `cat .repo/inited` != $1 ]; then
+		rm -rf .repo/manifest* &&
+		$REPO init -u $GITREPO -b $BRANCH
+		if [ $? -ne 0 ]; then
+			echo Repo init failed
+			exit -1
+		fi
+                echo $1 > .repo/inited
+        fi
 	$REPO sync
 	ret=$?
 	if [ "$GITREPO" = "$GIT_TEMP_REPO" ]; then
