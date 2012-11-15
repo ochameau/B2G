@@ -4,8 +4,8 @@ REPO=./repo
 
 repo_sync() {
 	rm -rf .repo/manifest* &&
-	$REPO init -u $GITREPO -b $BRANCH -m $1.xml &&
-	$REPO sync
+	$REPO init -u $GITREPO -b $BRANCH -m $1.xml --depth 1 &&
+	$REPO sync --current-branch
 	ret=$?
 	if [ "$GITREPO" = "$GIT_TEMP_REPO" ]; then
 		rm -rf $GIT_TEMP_REPO
